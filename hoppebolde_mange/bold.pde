@@ -20,7 +20,7 @@ class Bold {
     id = tempId;
     andreBolde = tempBolde;
     friction = tempFriction;
-    
+
 
   } 
 
@@ -39,7 +39,7 @@ class Bold {
         pos.x = size/2;
         velX *= friction;
       }
-      
+
       if (pos.y + size/2 > height) {
         pos.y = height - size/2;
         velY *= friction; 
