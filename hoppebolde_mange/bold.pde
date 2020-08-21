@@ -5,7 +5,8 @@ class Bold {
   float velX, velY;
   float acc;
   float gravity;
-
+  float id;
+  Bold[] andreBolde;
  
   Bold(float tempX, float tempY, float tempDia, float tempId, Bold[] tempBolde, float tempAcc, float tempGravity) {
     pos = new PVector(tempX,tempY);
@@ -14,6 +15,9 @@ class Bold {
     velY = 0;
     acc = tempAcc;
     gravity = tempGravity;
+    id = tempId;
+    andreBolde = tempBolde;
+    
   } 
   
   void move() {
@@ -23,9 +27,13 @@ class Bold {
 
   }
   
-  void collideCornor() {
-    if (pos.x < width) {
+  void collideWall() {
+    if (pos.x + size/2 < width) {
       pos.x *= -acc;
+      
+    }
+        if (pos.y + size/2 < height) {
+      pos.y *= -acc;
       
     }
   }
@@ -38,6 +46,6 @@ class Bold {
 
   
   void display() {
-
+    ellipse(pos.x,pos.y,size,size); 
   }
 }
