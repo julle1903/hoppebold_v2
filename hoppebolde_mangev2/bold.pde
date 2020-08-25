@@ -1,4 +1,3 @@
-
 class Bold {
 
   PVector position, rect1Position, rect2Position, rect3Position, rect4Position, rect1Size, rect2Size, rect3Size, rect4Size;
@@ -15,6 +14,7 @@ class Bold {
 
   Bold(float tempX, float tempY, float tempDia, int tempId, Bold[] tempBolde, float tempAcceleration, float tempGravity, float tempFriction, int tempAntalBolde) {
     position = new PVector(tempX, tempY);
+    //Gulvet
     rect1Position = new PVector(0, height-40);
     rect1Size = new PVector(200, 40);
     rect2Position = new PVector(200, height-80);
@@ -23,23 +23,27 @@ class Bold {
     rect3Size = new PVector(200, 60);
     rect4Position = new PVector(600, height-20);
     rect4Size = new PVector(200, 20);
+    //size er diameteren på elipsen
     size = tempDia;
+    //velocity er farten på vores elipser
     velocityX = 0;
     velocityY = 0;
+    //friction, acceleration og gravity påvirker vores velocity
     acceleration = tempAcceleration;
     gravity = tempGravity;
+    friction = tempFriction;
+    //id er boldens tal, som den får første gang man loader ind
     id = tempId;
     andreBolde = tempBolde;
-    friction = tempFriction;
     antalBolde = tempAntalBolde;
   } 
-
+//Vi bruger void move til at ændre vores elipsers placering, vi gør det ved at vi hele tiden ændre deres position x og y med vores velocity, grunden til at vi skriver "position.x/position.y" er fordi vi har med vectore og gøre
   void move() {
     velocityY += gravity;
     position.x += velocityX;
     position.y += velocityY;
   }
-
+//Her under er vores collideWall funktion, den gør som navnet siger. Måden den dog gør det på er ved at hele tiden checke om en bolds x eller y rammer en side. Vi gør det her ved at bruge et if statement som siger at hvis boldens x +½ af dens størelse er større end vinduets bredde så har den ramt og skal skifte retning
   void collideWall() {
     if (position.x + size/2 > width) {
       position.x = width - size/2;
@@ -57,7 +61,8 @@ class Bold {
       velocityY *= friction;
     }
   }
-
+//collideFloor var dog lidt tricky. Først køre den alle bolde igennem, derefter alle firkanterne. Derefter i vores if statement sætter vi firkanternes værdi til det rigtige så vi kan bruge dem længere nede (linje 86,88,91).  
+//Når vi så kommer ned til det næste if statement (linje 86) så begynder vi at bruge firkanterne de rammer til noget. Måden vi ser om de kolliderer er ved at checke om distancen er mindre end size/2 og hvis den er mindre så må det betyde at de har ramt, og så ændre vi på deres velocityY for at få dem til at hoppe
   void collideFloor() {
     for (int i = id; i < antalBolde; i++) {
       for (int j = 0; j < 4; j++) {
@@ -105,6 +110,7 @@ class Bold {
     }
   }
 
+//collideBalls starter med at loade alle andre bolde ind i sig selv, så køre vi et if statement som checker om selve bolden rammer en anden, det gør vi ved at kigge på distancen mellem boldene. Når boldene så rammer hinanden bliver de skudt i modsatte retninger for at gøre det realistisk.
   void collideBalls() {
     for (int i = id + 1; i < antalBolde; i++) {
       float distance = dist(andreBolde[i].position.x, andreBolde[i].position.y, position.x, position.y);
@@ -121,9 +127,11 @@ class Bold {
     }
   }
 
+//Her er tegne funktionen for cirklerne
   void displayCircle() {
     ellipse(position.x, position.y, size, size);
   }
+  //Her tegner vi vores gulv
   void displayRect() {      
     stroke(random(255),random(255),random(255));
     rect(rect1Position.x, rect1Position.y, rect1Size.x, rect1Size.y);
