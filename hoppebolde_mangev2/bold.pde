@@ -1,32 +1,32 @@
 
 class Bold {
 
-  PVector pos, r1Pos, r2Pos, r3Pos, r4Pos, r1Size, r2Size, r3Size, r4Size;
+  PVector position, rect1Position, rect2Position, rect3Position, rect4Position, rect1Size, rect2Size, rect3Size, rect4Size;
   float size;
-  float velX, velY;
-  float acc;
+  float velocityX, velocityY;
+  float acceleration;
   float gravity;
   float friction;
   int id;
-  float CX, CY, CW, CH; 
+  float currentRectX, currentRectY, currentRectW, currentRectH; 
 
   Bold[] andreBolde;
   int antalBolde;
 
-  Bold(float tempX, float tempY, float tempDia, int tempId, Bold[] tempBolde, float tempAcc, float tempGravity, float tempFriction, int tempAntalBolde) {
-    pos = new PVector(tempX, tempY);
-    r1Pos = new PVector(0, height-40);
-    r1Size = new PVector(200, 40);
-    r2Pos = new PVector(200, height-80);
-    r2Size = new PVector(200, 80);
-    r3Pos = new PVector(400, height-60);
-    r3Size = new PVector(200, 60);
-    r4Pos = new PVector(600, height-20);
-    r4Size = new PVector(200, 20);
+  Bold(float tempX, float tempY, float tempDia, int tempId, Bold[] tempBolde, float tempAcceleration, float tempGravity, float tempFriction, int tempAntalBolde) {
+    position = new PVector(tempX, tempY);
+    rect1Position = new PVector(0, height-40);
+    rect1Size = new PVector(200, 40);
+    rect2Position = new PVector(200, height-80);
+    rect2Size = new PVector(200, 80);
+    rect3Position = new PVector(400, height-60);
+    rect3Size = new PVector(200, 60);
+    rect4Position = new PVector(600, height-20);
+    rect4Size = new PVector(200, 20);
     size = tempDia;
-    velX = 0;
-    velY = 0;
-    acc = tempAcc;
+    velocityX = 0;
+    velocityY = 0;
+    acceleration = tempAcceleration;
     gravity = tempGravity;
     id = tempId;
     andreBolde = tempBolde;
@@ -35,26 +35,26 @@ class Bold {
   } 
 
   void move() {
-    velY += gravity;
-    pos.x += velX;
-    pos.y += velY;
+    velocityY += gravity;
+    position.x += velocityX;
+    position.y += velocityY;
   }
 
   void collideWall() {
-    if (pos.x + size/2 > width) {
-      pos.x = width - size/2;
-      velX *= friction;
-    } else if (pos.x - size/2 < 0) {
-      pos.x = size/2;
-      velX *= friction;
+    if (position.x + size/2 > width) {
+      position.x = width - size/2;
+      velocityX *= friction;
+    } else if (position.x - size/2 < 0) {
+      position.x = size/2;
+      velocityX *= friction;
     }
 
-    if (pos.y + size/2 > height) {
-      pos.y = height - size/2;
-      velY *= friction;
-    } else if (pos.y - size/2 < 0) {
-      pos.y = size/2;
-      velY *= friction;
+    if (position.y + size/2 > height) {
+      position.y = height - size/2;
+      velocityY *= friction;
+    } else if (position.y - size/2 < 0) {
+      position.y = size/2;
+      velocityY *= friction;
     }
   }
 
@@ -62,45 +62,44 @@ class Bold {
     for (int i = id; i < antalBolde; i++) {
       for (int j = 0; j < 4; j++) {
         if (j == 0) {
-          CX = r1Pos.x;
-          CY = r1Pos.y;
-          CW = r1Size.x;
-          CH = r1Size.y;
+          currentRectX = rect1Position.x;
+          currentRectY = rect1Position.y;
+          currentRectW = rect1Size.x;
+          currentRectH = rect1Size.y;
         } else if (j == 1) {
-          CX = r2Pos.x;
-          CY = r2Pos.y;
-          CW = r2Size.x;
-          CH = r2Size.y;
+          currentRectX = rect2Position.x;
+          currentRectY = rect2Position.y;
+          currentRectW = rect2Size.x;
+          currentRectH = rect2Size.y;
         } else if (j == 2) {
-          CX = r3Pos.x;
-          CY = r3Pos.y;
-          CW = r3Size.x;
-          CH = r3Size.y;
+          currentRectX = rect3Position.x;
+          currentRectY = rect3Position.y;
+          currentRectW = rect3Size.x;
+          currentRectH = rect3Size.y;
         } else if (j == 3) {
-          CX = r4Pos.x;
-          CY = r4Pos.y;
-          CW = r4Size.x;
-          CH = r4Size.y;
+          currentRectX = rect4Position.x;
+          currentRectY = rect4Position.y;
+          currentRectW = rect4Size.x;
+          currentRectH = rect4Size.y;
         } 
-        float testX = pos.x;
-        float testY = pos.y;
-        if (pos.x + size/2 < CX) {
-          testX = CX;
-        } else if (pos.x + size/2 > CX+CW) {
-          testX = CX+CW;
+        float testX = position.x;
+        float testY = position.y;
+        if (position.x + size/2 < currentRectX) {
+          testX = currentRectX;
+        } else if (position.x + size/2 > currentRectX+currentRectW) {
+          testX = currentRectX+currentRectW;
         }
-        if (pos.y +size/2 < CY) {
-          testY = CY;
+        if (position.y +size/2 < currentRectY) {
+          testY = currentRectY;
         }
 
-        float distX = pos.x-testX;
-        float distY = pos.y-testY;
+        float distX = position.x-testX;
+        float distY = position.y-testY;
         float distance = sqrt( (distX*distX) + (distY*distY) );
 
         if (distance <= size/2) {
-          
-          pos.y = height - (size/2+CH+0.0001);
-          velY *= friction;
+          position.y = height - (size/2+currentRectH+0.0001);
+          velocityY *= friction;
         }
       }
     }
@@ -108,31 +107,28 @@ class Bold {
 
   void collideBalls() {
     for (int i = id + 1; i < antalBolde; i++) {
-      float distance = dist(andreBolde[i].pos.x, andreBolde[i].pos.y, pos.x, pos.y);
+      float distance = dist(andreBolde[i].position.x, andreBolde[i].position.y, position.x, position.y);
       if (distance < andreBolde[i].size/2 + size/2) {
-        float X = pos.x + 2.5 * andreBolde[i].size/2 + size/2;
-        float Y = pos.y + 2.5 * andreBolde[i].size/2 + size/2;
-        float ax = (X - andreBolde[i].pos.x) * 0.05;
-        float ay = (Y - andreBolde[i].pos.y) * 0.05;
-        velX -= ax;
-        velY -= ay;
-        andreBolde[i].velX += ax;
-        andreBolde[i].velY += ay;
+        float X = position.x + 2.5 * andreBolde[i].size/2 + size/2;
+        float Y = position.y + 2.5 * andreBolde[i].size/2 + size/2;
+        float ax = (X - andreBolde[i].position.x) * 0.05;
+        float ay = (Y - andreBolde[i].position.y) * 0.05;
+        velocityX -= ax;
+        velocityY -= ay;
+        andreBolde[i].velocityX += ax;
+        andreBolde[i].velocityY += ay;
       }
     }
   }
 
-
-
-
   void displayCircle() {
-    ellipse(pos.x, pos.y, size, size);
+    ellipse(position.x, position.y, size, size);
   }
   void displayRect() {      
     stroke(random(255),random(255),random(255));
-    rect(r1Pos.x, r1Pos.y, r1Size.x, r1Size.y);
-    rect(r2Pos.x, r2Pos.y, r2Size.x, r2Size.y);
-    rect(r3Pos.x, r3Pos.y, r3Size.x, r3Size.y);
-    rect(r4Pos.x, r4Pos.y, r4Size.x, r4Size.y);}
+    rect(rect1Position.x, rect1Position.y, rect1Size.x, rect1Size.y);
+    rect(rect2Position.x, rect2Position.y, rect2Size.x, rect2Size.y);
+    rect(rect3Position.x, rect3Position.y, rect3Size.x, rect3Size.y);
+    rect(rect4Position.x, rect4Position.y, rect4Size.x, rect4Size.y);}
 
 }
