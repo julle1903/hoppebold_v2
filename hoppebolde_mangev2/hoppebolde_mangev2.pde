@@ -32,6 +32,9 @@ void draw() {
     text("SOM KAN PÅVIRKE SÆRLIGT FØLSOMME PERSONER", 10, 60);
     textSize(15);
     text("Ved klik på en hvilken som helst tast på tastaturet kan du genstarte dette program", 10, 90);
+<<<<<<< HEAD
+    //delay(10000);
+    println(frameCount);
   } else{
   //Tegner discokuglen
   image(background, 400, 125, 400, 400);
