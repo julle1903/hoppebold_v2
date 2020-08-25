@@ -8,6 +8,7 @@ class Bold {
   float gravity;
   float friction;
   int id;
+
   Bold[] andreBolde;
   int antalBolde;
  
@@ -58,9 +59,18 @@ class Bold {
       float distance = dist(andreBolde[i].pos.x, andreBolde[i].pos.y, pos.x, pos.y);
       if (distance < andreBolde[i].size/2 + size/2) {
         println("collide");
+        float X = pos.x + 2.5 * andreBolde[i].size/2 + size/2;
+        float Y = pos.y + 2.5 * andreBolde[i].size/2 + size/2;
+        float ax = (X - andreBolde[i].pos.x) * 0.05;
+        float ay = (Y - andreBolde[i].pos.y) * 0.05;
+        velX -= ax;
+        velY -= ay;
+        andreBolde[i].velX += ax;
+        andreBolde[i].velY += ay;
       }
     }
   }
+    
 
 
 
